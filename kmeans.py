@@ -30,36 +30,36 @@ def readPointsFromFile():
             break
     return pointsArray
 
-def kmean(pointArray, K, MAXITER): 
+def kmean(pointArray, k, MAXITER): 
     DVECTOR = len(pointArray[0]) 
     N = len(pointArray)
-    centroids = [pointArray[index] for index in range(K)]
+    centroids = [pointArray[index] for index in range(k)]
 
     for Iter in range(MAXITER):
-        newCentroids = computeClaster(K, N, DVECTOR, centroids, pointArray)
-        if (isArraysEquel(centroids, newCentroids, K, DVECTOR)):
+        newCentroids = computeClaster(k, N, DVECTOR, centroids, pointArray)
+        if (isArraysEquel(centroids, newCentroids, k, DVECTOR)):
             break
         centroids = newCentroids
     
-    for i in range(K): 
+    for i in range(k): 
         for d in range(DVECTOR):
             centroids[i][d] = round(centroids[i][d],4)
             
 
     return centroids
 
-def computeClaster(K, N, DVECTOR, centroids, pointArray): 
-    clusterArr = [[] for index in range(K)] 
+def computeClaster(k, N, DVECTOR, centroids, pointArray): 
+    clusterArr = [[] for index in range(k)] 
     for pointIndex in range(N): 
         minIndex = 0
         minDist = sys.maxsize
-        for clusterIndex in range(K):
+        for clusterIndex in range(k):
             currDist = computeDist(centroids[clusterIndex], pointArray[pointIndex], DVECTOR)
             if (currDist < minDist): 
                 minDist = currDist
                 minIndex = clusterIndex
         clusterArr[minIndex].append(pointArray[pointIndex]) 
-    return computeNewCentroids(clusterArr, K, DVECTOR) 
+    return computeNewCentroids(clusterArr, k, DVECTOR) 
 
 def computeDist(point1, point2, DVector): 
     dist = 0
@@ -67,9 +67,9 @@ def computeDist(point1, point2, DVector):
         dist += pow(point1[i] - point2[i],2)
     return dist
 
-def computeNewCentroids(clusterArr, K, DVECTOR): 
+def computeNewCentroids(clusterArr, k, DVECTOR): 
     newCentroids = [] 
-    for clusterIndex in range(K): 
+    for clusterIndex in range(k): 
         centroidK = []
         CountPointsInClusterK = len(clusterArr[clusterIndex]) 
         for i in range(DVECTOR): 
@@ -82,8 +82,8 @@ def computeNewCentroids(clusterArr, K, DVECTOR):
     return newCentroids
             
 
-def isArraysEquel(centroids, newCentroids, K, DVECTOR):
-    for centroinIndex in range(K):
+def isArraysEquel(centroids, newCentroids, k, DVECTOR):
+    for centroinIndex in range(k):
         for Xi in range(DVECTOR):
             if (centroids[centroinIndex][Xi] != newCentroids[centroinIndex][Xi]):
                 return False
