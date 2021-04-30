@@ -30,8 +30,74 @@ def readPointsFromFile():
             break
     return pointsArray
 
-def kmean(pointsArray, k, max_iter):
-    pass
+def kmean(pointArray, k, MAXITER): 
+    DVECTOR = len(pointArray[0]) 
+    N = len(pointArray)
+    centroids = [pointArray[index] for index in range(k)]
+
+    for Iter in range(MAXITER):
+        newCentroids = computeClaster(k, N, DVECTOR, centroids, pointArray)
+        if (isArraysEquel(centroids, newCentroids, k, DVECTOR)):
+            break
+        centroids = newCentroids
+    
+    for i in range(k): 
+        for d in range(DVECTOR):
+            centroids[i][d] = round(centroids[i][d],4)
+            
+
+    return centroids
+
+def computeClaster(k, N, DVECTOR, centroids, pointArray): 
+    clusterArr = [[] for index in range(k)] 
+    for pointIndex in range(N): 
+        minIndex = 0
+        minDist = sys.maxsize
+        for clusterIndex in range(k):
+            currDist = computeDist(centroids[clusterIndex], pointArray[pointIndex], DVECTOR)
+            if (currDist < minDist): 
+                minDist = currDist
+                minIndex = clusterIndex
+        clusterArr[minIndex].append(pointArray[pointIndex]) 
+    return computeNewCentroids(clusterArr, k, DVECTOR) 
+
+def computeDist(point1, point2, DVector): 
+    dist = 0
+    for i in range(DVector): 
+        dist += pow(point1[i] - point2[i],2)
+    return dist
+
+def computeNewCentroids(clusterArr, k, DVECTOR): 
+    newCentroids = [] 
+    for clusterIndex in range(k): 
+        centroidK = []
+        CountPointsInClusterK = len(clusterArr[clusterIndex]) 
+        for i in range(DVECTOR): 
+            CordinateXi = 0
+            for point in clusterArr[clusterIndex]:
+                CordinateXi += point[i] 
+            centroidK.append(CordinateXi / CountPointsInClusterK)
+        
+        newCentroids.append(centroidK)
+    return newCentroids
+            
+
+def isArraysEquel(centroids, newCentroids, k, DVECTOR):
+    for centroinIndex in range(k):
+        for Xi in range(DVECTOR):
+            if (centroids[centroinIndex][Xi] != newCentroids[centroinIndex][Xi]):
+                return False
+    return True
+
+def printOutput(centroids): 
+    str = ""
+    for i in range(len(centroids)): 
+        for d in range(len(centroids[0])): 
+            str += "{}".format(format(centroids[i][d], '.4f'))
+            str += ","
+        str = str[:-1] + "\n"
+    
+    print(str)
 
 def main():
     k, max_iter = readArgs()
@@ -43,6 +109,7 @@ def main():
         for point in pointsArray:
             print(point)
 
-    kmean(pointsArray, k, max_iter)
+    centroids = kmean(pointsArray, k, max_iter)
+    printOutput(centroids)
 
 main()
