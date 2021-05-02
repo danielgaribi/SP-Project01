@@ -222,8 +222,6 @@ void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
     //    newCentroids = computeClaster(k, d, *centroids, *pointsArray);
     //}
     
-
-
     computeDist(point1, point2,d);
 }
 
@@ -255,7 +253,40 @@ int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int 
     return true;
 }
 
-int isPointsEquel(node point1, node point2, int d) {
+void kmean(int **pointsArray, int k, int max_iter, int d) {
+    
+    int **centroids;
+    computeDist(point1, point2,d);
+
+}
+
+int computeDist(node *point1, node *point2, int d) {
+    int dist = 0; 
+    int i = 0;
+    int tmp; 
+    for (i = 0; i < d; i++) {
+        tmp = (point1 -> point[i]) - (point2 -> point[i]);
+        dist += tmp * tmp;
+    }
+    return dist;
+}
+
+int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d) {
+    node head1 = centroids -> head;
+    node head2 = newCentroids -> head;
+    int i = 0;
+
+    while (head1 != NULL) {
+        if (isPointsEquel(head1, head2) == false) {
+            return false;
+        }
+        head1 = head1 -> next;
+        head2 = head2 -> next;
+    }
+    return true;
+}
+
+int isPointsEquel(node* point1, node* point2, int d) {
     int i = 0;
     for (int i = 0; i < d; i++) {
         if (point1 -> point[i] != point2 -> point[i]) {
