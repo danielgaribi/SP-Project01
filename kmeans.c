@@ -8,10 +8,26 @@
 #define DEFAULT_MAX_ITER 200
 #define DEBUG_INPUT
 
+struct node
+{
+    double* point;
+    struct node *next;
+};
+
+struct linked_list
+{
+    struct node *head;
+    struct node *tail;
+};
+
+typedef struct node node;
+typedef struct linked_list linked_list;
+
 void kmean(int **pointsArray, int k, int max_iter);
 int readArgs(int argc, char *argv[], int* k, int* max_iter);
 void readPointsArray();
 void stringToPoint(char *str);
+void addToList(linked_list* list, double* point);
 
 int main(int argc, char *argv[]) {
     assert(2 <= argc && argc <= 3);
@@ -28,13 +44,13 @@ int main(int argc, char *argv[]) {
 
 int readArgs(int argc, char *argv[], int* k, int* max_iter) {
     *k = atoi(argv[1]); /////////////////////////////////////////////////////////////////////
-    if (*k == 0) {
+    if (*k <= 0) {
         printf("K is not a valid integer, exits...\n");
         return false;
     }
 
     *max_iter = argc == 3 ? atoi(argv[2]) : DEFAULT_MAX_ITER;
-    if (*max_iter == 0) {
+    if (*max_iter <= 0) {
         printf("max_iter is not a valid integer, exits...\n");
         return false;
     }
@@ -47,7 +63,6 @@ int readArgs(int argc, char *argv[], int* k, int* max_iter) {
 }
 
 void readPointsArray() {
-    char str[1024];
     int d = 0;
     double value;
     char c;
@@ -61,7 +76,7 @@ void readPointsArray() {
     int i;
 
     while(scanf("%lf%c", &value, &c) == 2) {
-
+        
     }
 
     for (int i =0; i< 9; i++)
@@ -89,4 +104,14 @@ void stringToPoint(char *str){
 
 void kmean(int **pointsArray, int k, int max_iter) {
     int **centroids;
+}
+
+
+
+
+void addToList(linked_list* list, double* point) {
+    node *n = (node*)malloc(sizeof(node));
+    n -> point = point;
+    n -> next = NULL;
+    list -> tail -> next = n
 }
