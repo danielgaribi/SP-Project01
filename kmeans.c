@@ -37,7 +37,7 @@ typedef struct linked_list linked_list;
 typedef struct node_double node_double;
 typedef struct linked_list_double linked_list_double;
 
-void kmean(int **pointsArray, int k, int max_iter);
+void kmean(linked_list *pointsArray, int k, int max_iter);
 int readArgs(int argc, char *argv[], int* k, int* max_iter);
 void readPointsArray();
 void stringToPoint(char *str);
@@ -198,10 +198,38 @@ void freeNodeDouble(node_double* n) {
     }
 }
 
-void kmean(int **pointsArray, int k, int max_iter, int d) {
+void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
+    int i = 0;
+    int iter = 0;
+    double *centroids_data;
+    double *centroids_pointers; 
+
+    centroids_data = calloc(k * d, sizeof(double)); 
+    centroids_pointers = calloc(k, sizeof(double *)); 
+
+    node head = pointsArray -> head;
+
+    // set initial centroids to be the first k points in pointsArray 
+    for (int i = 0; i < k; i++) { 
+        node *tmp = (node*)malloc(sizeof(node));
+        tmp -> point = head.point;
+        centroids[i] = *tmp;
+        head = head.next;
+    }
+    head = pointsArray -> head; // reset head to the begging of pointArray
+
+    for (int iter = 0; iter < max_iter; iter++) {
+        newCentroids = computeClaster(k, d, *centroids, *pointsArray);
+
+    }
     
-    int **centroids;
+
+
     computeDist(point1, point2,d);
+}
+
+int computeClaster(int k, int d, ) {
+
 }
 
 int computeDist(node *point1, node *point2, int d) {
