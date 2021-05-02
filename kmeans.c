@@ -48,6 +48,9 @@ void freeList(linked_list* list);
 void freeListDouble(linked_list_double* list);
 void freeNode(node* n);
 void freeNodeDouble(node_double* n);
+int computeDist(node *point1, node *point2, int d);
+int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d);
+int isPointsEquel(node point1, node point2, int d);
 
 int main(int argc, char *argv[]) {
     assert(2 <= argc && argc <= 3);
@@ -201,19 +204,38 @@ void kmean(int **pointsArray, int k, int max_iter, int d) {
 
 }
 
-int computeDist(node point1, node point2, d) {
+int computeDist(node *point1, node *point2, int d) {
     int dist = 0; 
     int i = 0;
+    int tmp; 
     for (i = 0; i < d; i++) {
-        dist += (point1.point[i] - point2.point[i]) * (point1.point[i] - point2.point[i]);
+        tmp = (point1 -> point[i]) - (point2 -> point[i]);
+        dist += tmp * tmp;
     }
     return dist;
 }
 
-int isArraysEquel(centroids, newCentroids, k, DVECTOR) {
-    for centroinIndex in range(k):
-        for Xi in range(DVECTOR):
-            if (centroids[centroinIndex][Xi] != newCentroids[centroinIndex][Xi]):
-                return False
-    return True
+int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d) {
+    node head1 = centroids -> head;
+    node head2 = newCentroids -> head;
+    int i = 0;
+
+    while (head1 != NULL) {
+        if (isPointsEquel(head1, head2) == false) {
+            return false;
+        }
+        head1 = head1 -> next;
+        head2 = head2 -> next;
+    }
+    return true;
+}
+
+int isPointsEquel(node point1, node point2, int d) {
+    int i = 0;
+    for (int i = 0; i < d; i++) {
+        if (point1 -> point[i] != point2 -> point[i]) {
+            return false;
+        }
+    }
+    return true;
 }
