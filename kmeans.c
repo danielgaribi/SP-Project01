@@ -210,27 +210,24 @@ void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
     node head = pointsArray -> head;
 
     // set initial centroids to be the first k points in pointsArray 
-    for (int i = 0; i < k; i++) { 
-        node *tmp = (node*)malloc(sizeof(node));
-        tmp -> point = head.point;
-        centroids[i] = *tmp;
-        head = head.next;
-    }
-    head = pointsArray -> head; // reset head to the begging of pointArray
+    //for (int i = 0; i < k; i++) { 
+    //    node *tmp = (node*)malloc(sizeof(node));
+    //    tmp -> point = head.point;
+    //    centroids[i] = *tmp;
+    //    head = head.next;
+    //}
+    //head = pointsArray -> head; // reset head to the begging of pointArray
 
-    for (int iter = 0; iter < max_iter; iter++) {
-        newCentroids = computeClaster(k, d, *centroids, *pointsArray);
-
-    }
+    //for (int iter = 0; iter < max_iter; iter++) {
+    //    newCentroids = computeClaster(k, d, *centroids, *pointsArray);
+    //}
     
 
 
     computeDist(point1, point2,d);
 }
 
-int computeClaster(int k, int d, ) {
-
-}
+int computeClaster(int k, int d, ) {}
 
 int computeDist(node *point1, node *point2, int d) {
     int dist = 0; 
