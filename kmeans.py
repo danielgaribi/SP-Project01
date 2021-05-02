@@ -43,9 +43,7 @@ def kmean(pointArray, k, MAXITER):
     
     for i in range(k): 
         for d in range(DVECTOR):
-            centroids[i][d] = round(centroids[i][d],4)
-            
-
+            centroids[i][d] = round(centroids[i][d],4) 
     return centroids
 
 def computeClaster(k, N, DVECTOR, centroids, pointArray): 
@@ -71,12 +69,12 @@ def computeNewCentroids(clusterArr, k, DVECTOR):
     newCentroids = [] 
     for clusterIndex in range(k): 
         centroidK = []
-        CountPointsInClusterK = len(clusterArr[clusterIndex]) 
+        countPointsInClusterK = len(clusterArr[clusterIndex]) 
         for i in range(DVECTOR): 
-            CordinateXi = 0
+            cordinateXi = 0
             for point in clusterArr[clusterIndex]:
-                CordinateXi += point[i] 
-            centroidK.append(CordinateXi / CountPointsInClusterK)
+                cordinateXi += point[i] 
+            centroidK.append(cordinateXi / countPointsInClusterK)
         
         newCentroids.append(centroidK)
     return newCentroids

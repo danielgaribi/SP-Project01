@@ -37,7 +37,7 @@ typedef struct linked_list linked_list;
 typedef struct node_double node_double;
 typedef struct linked_list_double linked_list_double;
 
-void kmean(int **pointsArray, int k, int max_iter);
+void kmean(linked_list *pointsArray, int k, int max_iter);
 int readArgs(int argc, char *argv[], int* k, int* max_iter);
 void readPointsArray();
 void stringToPoint(char *str);
@@ -48,6 +48,9 @@ void freeList(linked_list* list);
 void freeListDouble(linked_list_double* list);
 void freeNode(node* n);
 void freeNodeDouble(node_double* n);
+int computeDist(node *point1, node *point2, int d);
+int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d);
+int isPointsEquel(node *point1, node *point2, int d);
 
 int main(int argc, char *argv[]) {
     assert(2 <= argc && argc <= 3);
@@ -136,13 +139,6 @@ void stringToPoint(char *str){
 	}
 }
 
-void kmean(int **pointsArray, int k, int max_iter) {
-    int **centroids;
-}
-
-
-
-
 void addToList(linked_list* list, double* point) {
     node *n = (node*)malloc(sizeof(node));
     n -> point = point;
@@ -200,4 +196,102 @@ void freeNodeDouble(node_double* n) {
         freeNodeDouble(n -> next);
         free(n);
     }
+}
+
+void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
+    int i = 0;
+    int iter = 0;
+    double *centroids_data;
+    double *centroids_pointers; 
+
+    centroids_data = calloc(k * d, sizeof(double)); 
+    centroids_pointers = calloc(k, sizeof(double *)); 
+
+    node head = pointsArray -> head;
+
+    // set initial centroids to be the first k points in pointsArray 
+    //for (int i = 0; i < k; i++) { 
+    //    node *tmp = (node*)malloc(sizeof(node));
+    //    tmp -> point = head.point;
+    //    centroids[i] = *tmp;
+    //    head = head.next;
+    //}
+    //head = pointsArray -> head; // reset head to the begging of pointArray
+
+    //for (int iter = 0; iter < max_iter; iter++) {
+    //    newCentroids = computeClaster(k, d, *centroids, *pointsArray);
+    //}
+    
+    computeDist(point1, point2,d);
+}
+
+int computeClaster(int k, int d, ) {}
+
+int computeDist(node *point1, node *point2, int d) {
+    int dist = 0; 
+    int i = 0;
+    int tmp; 
+    for (i = 0; i < d; i++) {
+        tmp = (point1 -> point[i]) - (point2 -> point[i]);
+        dist += tmp * tmp;
+    }
+    return dist;
+}
+
+int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d) {
+    node head1 = centroids -> head;
+    node head2 = newCentroids -> head;
+    int i = 0;
+
+    while (head1 != NULL) {
+        if (isPointsEquel(head1, head2) == false) {
+            return false;
+        }
+        head1 = head1 -> next;
+        head2 = head2 -> next;
+    }
+    return true;
+}
+
+void kmean(int **pointsArray, int k, int max_iter, int d) {
+    
+    int **centroids;
+    computeDist(point1, point2,d);
+
+}
+
+int computeDist(node *point1, node *point2, int d) {
+    int dist = 0; 
+    int i = 0;
+    int tmp; 
+    for (i = 0; i < d; i++) {
+        tmp = (point1 -> point[i]) - (point2 -> point[i]);
+        dist += tmp * tmp;
+    }
+    return dist;
+}
+
+int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d) {
+    node head1 = centroids -> head;
+    node head2 = newCentroids -> head;
+    int i = 0;
+
+    while (head1 != NULL) {
+        if (isPointsEquel(head1, head2) == false) {
+            return false;
+        }
+        head1 = head1 -> next;
+        head2 = head2 -> next;
+    }
+    return true;
+}
+
+int isPointsEquel(node* point1, node* point2, int d) {
+    int i = 0;
+    for (int i = 0; i < d; i++) {
+        if (point1 -> point[i] != point2 -> point[i]) {
+            return false;
+        }
+    }
+    return true;
 }
