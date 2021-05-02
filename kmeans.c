@@ -144,7 +144,7 @@ int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int 
     return true;
 }
 
-int isPointsEquel(node point1, node point2, int d) {
+int isPointsEquel(node* point1, node* point2, int d) {
     int i = 0;
     for (int i = 0; i < d; i++) {
         if (point1 -> point[i] != point2 -> point[i]) {
