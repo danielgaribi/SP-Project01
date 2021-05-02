@@ -201,7 +201,6 @@ void freeNodeDouble(node_double* n) {
 void kmean(int **pointsArray, int k, int max_iter, int d) {
     int **centroids;
     computeDist(point1, point2,d);
-
 }
 
 int computeDist(node *point1, node *point2, int d) {
