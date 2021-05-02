@@ -37,7 +37,7 @@ typedef struct linked_list linked_list;
 typedef struct node_double node_double;
 typedef struct linked_list_double linked_list_double;
 
-void kmean(linked_list *pointsArray, int k, int max_iter);
+void kmean(linked_list *pointsArray, int k, int max_iter, int d);
 int readArgs(int argc, char *argv[], int* k, int* max_iter);
 void readPointsArray();
 void stringToPoint(char *str);
@@ -207,7 +207,7 @@ void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
     centroids_data = calloc(k * d, sizeof(double)); 
     centroids_pointers = calloc(k, sizeof(double *)); 
 
-    node head = pointsArray -> head;
+    node *head = pointsArray -> head;
 
     // set initial centroids to be the first k points in pointsArray 
     //for (int i = 0; i < k; i++) { 
@@ -222,10 +222,10 @@ void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
     //    newCentroids = computeClaster(k, d, *centroids, *pointsArray);
     //}
     
-    computeDist(point1, point2,d);
+    //computeDist(point1, point2,d);
 }
 
-int computeClaster(int k, int d, ) {}
+//int computeClaster(int k, int d, ) {}
 
 int computeDist(node *point1, node *point2, int d) {
     int dist = 0; 
@@ -239,45 +239,12 @@ int computeDist(node *point1, node *point2, int d) {
 }
 
 int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d) {
-    node head1 = centroids -> head;
-    node head2 = newCentroids -> head;
+    node *head1 = centroids -> head;
+    node *head2 = newCentroids -> head;
     int i = 0;
 
     while (head1 != NULL) {
-        if (isPointsEquel(head1, head2) == false) {
-            return false;
-        }
-        head1 = head1 -> next;
-        head2 = head2 -> next;
-    }
-    return true;
-}
-
-void kmean(int **pointsArray, int k, int max_iter, int d) {
-    
-    int **centroids;
-    computeDist(point1, point2,d);
-
-}
-
-int computeDist(node *point1, node *point2, int d) {
-    int dist = 0; 
-    int i = 0;
-    int tmp; 
-    for (i = 0; i < d; i++) {
-        tmp = (point1 -> point[i]) - (point2 -> point[i]);
-        dist += tmp * tmp;
-    }
-    return dist;
-}
-
-int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d) {
-    node head1 = centroids -> head;
-    node head2 = newCentroids -> head;
-    int i = 0;
-
-    while (head1 != NULL) {
-        if (isPointsEquel(head1, head2) == false) {
+        if (isPointsEquel(head1, head2, d) == false) {
             return false;
         }
         head1 = head1 -> next;
