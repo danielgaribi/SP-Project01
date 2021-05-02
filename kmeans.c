@@ -30,7 +30,7 @@ void stringToPoint(char *str);
 void addToList(linked_list* list, double* point);
 int computeDist(node *point1, node *point2, int d);
 int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d);
-int isPointsEquel(node point1, node point2, int d);
+int isPointsEquel(node *point1, node *point2, int d);
 
 int main(int argc, char *argv[]) {
     assert(2 <= argc && argc <= 3);
@@ -113,6 +113,7 @@ void addToList(linked_list* list, double* point) {
 }
 
 void kmean(int **pointsArray, int k, int max_iter, int d) {
+    
     int **centroids;
     computeDist(point1, point2,d);
 
