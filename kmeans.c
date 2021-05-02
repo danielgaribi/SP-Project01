@@ -87,6 +87,26 @@ void stringToPoint(char *str){
 	}
 }
 
-void kmean(int **pointsArray, int k, int max_iter) {
+void kmean(int **pointsArray, int k, int max_iter, int d) {
     int **centroids;
+
+    computeDist(point1, point2,d);
+
+}
+
+int computeDist(node point1, node point2, d) {
+    int dist = 0; 
+    int i = 0;
+    for (i = 0; i < d; i++) {
+        dist += (point1.point[i] - point2.point[i]) * (point1.point[i] - point2.point[i]);
+    }
+    return dist;
+}
+
+int isArraysEquel(centroids, newCentroids, k, DVECTOR){
+    for centroinIndex in range(k):
+        for Xi in range(DVECTOR):
+            if (centroids[centroinIndex][Xi] != newCentroids[centroinIndex][Xi]):
+                return False
+    return True
 }
