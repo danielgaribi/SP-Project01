@@ -51,6 +51,7 @@ void freeNodeDouble(node_double* n);
 int computeDist(node *point1, node *point2, int d);
 int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d);
 int isPointsEquel(node *point1, node *point2, int d);
+double* copy_point(double* point);
 
 int main(int argc, char *argv[]) {
     assert(2 <= argc && argc <= 3);
@@ -199,29 +200,37 @@ void freeNodeDouble(node_double* n) {
 }
 
 void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
-    int i = 0; 
-    int j = 0;
-    int iter = 0;
-    double **centroids_pointers;
+    int i = 0, j = 0, iter = 0;
+    double **centroids_pointers; 
     double *centroids_data;
-    node head = pointsArray -> head;
+    node *head = pointsArray -> head;
     
     //set initial centroids to be the first k points in pointsArray 
     centroids_pointers = calloc(k, sizeof(double *)); 
     for (int i = 0; i < k; i++; head = head -> next) {
         centroids_pointers[i] = calloc(d, sizeof(double));
         assert(centroids_pointers[i] != NULL);
-        centroids_pointers[i] = head.point;
+        centroids_pointers[i] = copy_point(head -> point);
     }
 
+    head = pointsArray -> head;
 
-    //for (int iter = 0; iter < max_iter; iter++) {
-    //    newCentroids = computeClaster(k, d, *centroids, *pointsArray);
-    //}
+
+    for (int iter = 0; iter < max_iter; iter++) {
+        newCentroids = computeClaster(k, d, *centroids, *pointsArray);
+
+    }
+    
     //computeDist(point1, point2,d);
 }
 
-//int computeClaster(int k, int d, ) {}
+double* copy_point(double* point) {
+
+}
+
+int computeClaster(int k, int d, ) {
+
+}
 
 int computeDist(node *point1, node *point2, int d) {
     int dist = 0; 
@@ -235,17 +244,12 @@ int computeDist(node *point1, node *point2, int d) {
 }
 
 // change centroids to array of doubles
-int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d) {
-    node *head1 = centroids -> head;
-    node *head2 = newCentroids -> head;
+int isArraysEquel(double **centroids_pointers, double **new_centroids_pointers, int k, int d) {
     int i = 0;
-
-    while (head1 != NULL) {
-        if (isPointsEquel(head1, head2, d) == false) {
+    for (i = 0; i < k; i++) {
+        if (isPointsEquel(centroids_pointers[i], new_centroids_pointers[i]) == false) {
             return false;
         }
-        head1 = head1 -> next;
-        head2 = head2 -> next;
     }
     return true;
 }
