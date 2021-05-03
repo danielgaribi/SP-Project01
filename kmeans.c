@@ -52,6 +52,8 @@ double computeDist(double* point1, double* point2, int d);
 int isArraysEquel(double **centroids_pointers, double **new_centroids_pointers, int k, int d);
 int isPointsEquel(double* point1, double* point2, int d);
 double* copy_point(double* point, int d);
+double** computeCluster(int k, int d, double** centroids, linked_list* pointsList);
+double** computeNewCentroids(linked_list** clusters, int k, int d);
 //int computeClaster(int k, int d);
 void printOutput(double** centroids, int k, int d);
 
@@ -227,9 +229,7 @@ void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
 }
 
 double* copy_point(double* point, int d) {
-    double* new_point;
     int i = 0;
-    
     double* new_point = calloc(d, sizeof(double));
     assert(new_point != NULL);
     for (int i = 0; i < d; i++) {
@@ -238,7 +238,48 @@ double* copy_point(double* point, int d) {
     return new_point;
 }
 
-//int computeClaster(int k, int d) {}
+double** computeCluster(int k, int d, double** centroids, linked_list* pointsList) {
+    linked_list** clusters = (linked_list**)calloc(k, sizeof(linked_list));
+    double** newCentroids;
+    double minDist, dist;
+    int minIndex;
+    for(node* n = pointsList -> head; n != NULL; n = n -> next ) {
+        minIndex = 0;
+        minDist = 999999;
+        for (int i = 0; i < k; i++) {
+            dist = computeDist(centroids[i], n -> point, d);
+            if (dist < minDist) {
+                minDist = dist;
+                minIndex = i;
+            }
+        }
+        addToList(clusters[minIndex], n -> point);
+    }
+    newCentroids = computeNewCentroids(clusters, k, d);
+    for(int i = 0; i < k; i++) {
+        freeList(clusters[i]);
+    }
+    free(clusters);
+    return newCentroids;
+}
+
+double** computeNewCentroids(linked_list** clusters, int k, int d) {
+    double** centroids = calloc(k, sizeof(double*));
+    double* centroid;
+    int j;
+    for (int i = 0; i < k; i++) {
+        centroid = calloc(d, sizeof(double));
+        j = 0;
+        for (node* n = (clusters[i]) -> head; n != NULL; n = n-> next) {
+            for(int t = t; t < d; t++) {
+                centroid[t] = (centroid[t] * j + (n -> point)[t]) / (j + 1);
+            }
+            j++;
+        }
+        centroids[i] = centroid;
+    }
+    return centroids;
+}
 
 double computeDist(double* point1, double* point2, int d) {
     double dist = 0, tmp = 0; 
