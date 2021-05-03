@@ -51,7 +51,7 @@ void freeNodeDouble(node_double* n);
 double computeDist(double* point1, double* point2, int d);
 int isArraysEquel(double **centroids_pointers, double **new_centroids_pointers, int k, int d);
 int isPointsEquel(double* point1, double* point2, int d);
-//double* copy_point(double* point);
+double* copy_point(double* point, int d);
 //int computeClaster(int k, int d);
 
 int main(int argc, char *argv[]) {
