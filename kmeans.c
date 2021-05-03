@@ -53,6 +53,7 @@ int isArraysEquel(double **centroids_pointers, double **new_centroids_pointers, 
 int isPointsEquel(double* point1, double* point2, int d);
 double* copy_point(double* point, int d);
 //int computeClaster(int k, int d);
+void printOutput(double** centroids, int k, int d);
 
 int main(int argc, char *argv[]) {
     assert(2 <= argc && argc <= 3);
@@ -268,4 +269,16 @@ int isPointsEquel(double* point1, double* point2, int d) {
         }
     }
     return true;
+}
+
+void printOutput(double** centroids, int k, int d) {
+    int i = 0, j = 0;
+    for (int i = 0; i < k; i++) {
+        printf("Point %d: ", i);
+        for (int j = 0; j < d; j++) {
+            printf("%lf, ", centroids[i][j]);
+        }
+        printf("\n");
+        i++;
+    }
 }
