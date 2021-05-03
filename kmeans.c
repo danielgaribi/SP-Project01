@@ -199,29 +199,25 @@ void freeNodeDouble(node_double* n) {
 }
 
 void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
-    int i = 0;
+    int i = 0; 
+    int j = 0;
     int iter = 0;
+    double **centroids_pointers;
     double *centroids_data;
-    double *centroids_pointers; 
-
-    centroids_data = calloc(k * d, sizeof(double)); 
+    node head = pointsArray -> head;
+    
+    //set initial centroids to be the first k points in pointsArray 
     centroids_pointers = calloc(k, sizeof(double *)); 
+    for (int i = 0; i < k; i++; head = head -> next) {
+        centroids_pointers[i] = calloc(d, sizeof(double));
+        assert(centroids_pointers[i] != NULL);
+        centroids_pointers[i] = head.point;
+    }
 
-    node *head = pointsArray -> head;
-
-    // set initial centroids to be the first k points in pointsArray 
-    //for (int i = 0; i < k; i++) { 
-    //    node *tmp = (node*)malloc(sizeof(node));
-    //    tmp -> point = head.point;
-    //    centroids[i] = *tmp;
-    //    head = head.next;
-    //}
-    //head = pointsArray -> head; // reset head to the begging of pointArray
 
     //for (int iter = 0; iter < max_iter; iter++) {
     //    newCentroids = computeClaster(k, d, *centroids, *pointsArray);
     //}
-    
     //computeDist(point1, point2,d);
 }
 
@@ -238,6 +234,7 @@ int computeDist(node *point1, node *point2, int d) {
     return dist;
 }
 
+// change centroids to array of doubles
 int isArraysEquel(linked_list* centroids, linked_list* newCentroids, int k, int d) {
     node *head1 = centroids -> head;
     node *head2 = newCentroids -> head;
