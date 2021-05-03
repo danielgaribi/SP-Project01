@@ -48,7 +48,7 @@ void freeList(linked_list* list);
 void freeListDouble(linked_list_double* list);
 void freeNode(node* n);
 void freeNodeDouble(node_double* n);
-double computeDist(node *point1, node *point2, int d);
+double computeDist(double* point1, double* point2, int d);
 int isArraysEquel(double **centroids_pointers, double **new_centroids_pointers, int k, int d);
 int isPointsEquel(double* point1, double* point2, int d);
 //double* copy_point(double* point);
@@ -229,12 +229,11 @@ void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
 
 //int computeClaster(int k, int d) {}
 
-double computeDist(node *point1, node *point2, int d) {
-    double dist = 0; 
+double computeDist(double* point1, double* point2, int d) {
+    double dist = 0, tmp = 0; 
     int i = 0;
-    int tmp; 
     for (i = 0; i < d; i++) {
-        tmp = (point1 -> point[i]) - (point2 -> point[i]);
+        tmp = (point1[i] - point2[i]);
         dist += tmp * tmp;
     }
     return dist;
