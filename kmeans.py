@@ -36,7 +36,7 @@ def kmean(pointArray, k, MAXITER):
     centroids = [pointArray[index] for index in range(k)]
 
     for Iter in range(MAXITER):
-        newCentroids = computeClaster(k, N, DVECTOR, centroids, pointArray)
+        newCentroids = computeCluster(k, N, DVECTOR, centroids, pointArray)
         if (isArraysEquel(centroids, newCentroids, k, DVECTOR)):
             break
         centroids = newCentroids
@@ -46,7 +46,7 @@ def kmean(pointArray, k, MAXITER):
             centroids[i][d] = round(centroids[i][d],4) 
     return centroids
 
-def computeClaster(k, N, DVECTOR, centroids, pointArray): 
+def computeCluster(k, N, DVECTOR, centroids, pointArray): 
     clusterArr = [[] for index in range(k)] 
     for pointIndex in range(N): 
         minIndex = 0
