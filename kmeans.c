@@ -211,7 +211,7 @@ void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
     for (int i = 0; i < k; head = head -> next, i++) {
         centroids_pointers[i] = calloc(d, sizeof(double));
         assert(centroids_pointers[i] != NULL);
-        //centroids_pointers[i] = copy_point(head -> point);
+        centroids_pointers[i] = copy_point(head -> point, d);
     }
 
     head = pointsArray -> head;
@@ -225,7 +225,17 @@ void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
     //computeDist(point1, point2,d);
 }
 
-//double* copy_point(double* point) {}
+double* copy_point(double* point, int d) {
+    double* new_point;
+    int i = 0;
+    
+    double* new_point = calloc(d, sizeof(double));
+    assert(new_point != NULL);
+    for (int i = 0; i < d; i++) {
+        new_point[i] = point[i];
+    }
+    return new_point;
+}
 
 //int computeClaster(int k, int d) {}
 
