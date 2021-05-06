@@ -334,7 +334,7 @@ void printOutput(double** centroids, int k, int d) {
     for (int i = 0; i < k; i++) {
         printf("Point %d: ", i);
         for (int j = 0; j < d; j++) {
-            printf("%lf, ", centroids[i][j]);
+            printf("%.4lf, ", centroids[i][j]);
         }
         printf("\n");
     }
