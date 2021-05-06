@@ -1,9 +1,7 @@
 /*
 TO DO List
-1. python - cut and not round
 2. C:
-2.1. memory - asserts and free
-2.2 printing - cut to 4 digits
+2.1. memory -  free
 3. Validate assumptions 
 */
 
@@ -84,7 +82,7 @@ int main(int argc, char *argv[]) {
 
     kmean(pointsList, k, max_iter, d);
 
-    return true;
+    return 0;
 }
 
 int readArgs(int argc, char *argv[], int* k, int* max_iter) {
@@ -332,9 +330,11 @@ int isPointsEquel(double* point1, double* point2, int d) {
 void printOutput(double** centroids, int k, int d) {
     int i = 0, j = 0;
     for (int i = 0; i < k; i++) {
-        printf("Point %d: ", i);
         for (int j = 0; j < d; j++) {
-            printf("%.4lf, ", centroids[i][j]);
+            printf("%.4lf", centroids[i][j]);
+            if(j != d - 1){
+                printf(",");
+            }
         }
         printf("\n");
     }
