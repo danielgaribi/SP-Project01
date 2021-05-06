@@ -1,9 +1,7 @@
 /*
 TO DO List
-1. python - cut and not round
 2. C:
-2.1. memory - asserts and free
-2.2 printing - cut to 4 digits
+2.1. memory -  free
 3. Validate assumptions 
 */
 
@@ -27,6 +25,7 @@ struct linked_list
 {
     struct node *head;
     struct node *tail;
+    int length;
 };
 
 struct node_double
@@ -73,8 +72,13 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     linked_list* pointsList = (linked_list*)malloc(sizeof(linked_list));
+    pointsList->length = 0;
     assert(pointsList != NULL);
     int d = readPointsArray(pointsList);
+    if(k > pointsList->length) {
+        printf("K is not a valid integer, exits...\n");
+        return false;
+    }
 
     kmean(pointsList, k, max_iter, d);
 
@@ -151,6 +155,7 @@ void addToList(linked_list* list, double* point) {
     assert(n != NULL);
     n -> point = point;
     n -> next = NULL;
+    (list->length)++;
     if(list -> head == NULL) {
         list -> head = n;
         list -> tail = n;
@@ -325,9 +330,11 @@ int isPointsEquel(double* point1, double* point2, int d) {
 void printOutput(double** centroids, int k, int d) {
     int i = 0, j = 0;
     for (int i = 0; i < k; i++) {
-        printf("Point %d: ", i);
         for (int j = 0; j < d; j++) {
-            printf("%lf, ", centroids[i][j]);
+            printf("%.4lf", centroids[i][j]);
+            if(j != d - 1){
+                printf(",");
+            }
         }
         printf("\n");
     }

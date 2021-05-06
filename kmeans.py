@@ -41,9 +41,6 @@ def kmean(pointArray, k, MAXITER):
             break
         centroids = newCentroids
     
-    for i in range(k): 
-        for d in range(DVECTOR):
-            centroids[i][d] = round(centroids[i][d],4) 
     return centroids
 
 def computeCluster(k, N, DVECTOR, centroids, pointArray): 
@@ -95,7 +92,7 @@ def printOutput(centroids):
             str += ","
         str = str[:-1] + "\n"
     
-    print(str)
+    print(str[:-1])
 
 def main():
     k, max_iter = readArgs()
