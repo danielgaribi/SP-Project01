@@ -27,6 +27,7 @@ struct linked_list
 {
     struct node *head;
     struct node *tail;
+    int length;
 };
 
 struct node_double
@@ -73,12 +74,17 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     linked_list* pointsList = (linked_list*)malloc(sizeof(linked_list));
+    pointsList->length = 0;
     assert(pointsList != NULL);
     int d = readPointsArray(pointsList);
+    if(k > pointsList->length) {
+        printf("K is not a valid integer, exits...\n");
+        return false;
+    }
 
     kmean(pointsList, k, max_iter, d);
 
-    return 0;
+    return true;
 }
 
 int readArgs(int argc, char *argv[], int* k, int* max_iter) {
@@ -151,6 +157,7 @@ void addToList(linked_list* list, double* point) {
     assert(n != NULL);
     n -> point = point;
     n -> next = NULL;
+    (list->length)++;
     if(list -> head == NULL) {
         list -> head = n;
         list -> tail = n;
