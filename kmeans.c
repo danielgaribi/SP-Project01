@@ -51,18 +51,18 @@ int readPointsArray(linked_list* pointsList);
 void addToList(linked_list* list, double* point);
 void addToListDouble(linked_list_double* list, double value);
 double* convertDoubleListToArray(linked_list_double* list, int d);
-void freeList(linked_list* list);
+void freeList(linked_list* list, int isDeletePoint);
 void freeListDouble(linked_list_double* list);
-void freeNode(node* n);
+void freeNode(node* n, int isDeletePoint);
 void freeNodeDouble(node_double* n);
 double computeDist(double* point1, double* point2, int d);
 int isArraysEquel(double **centroids_pointers, double **new_centroids_pointers, int k, int d);
 int isPointsEquel(double* point1, double* point2, int d);
 double* copy_point(double* point, int d);
-double** computeCluster(int k, int d, double** centroids, linked_list* pointsList);
-double** computeNewCentroids(linked_list** clusters, int k, int d);
+int computeCluster(int k, int d, double** centroids, linked_list* pointsList);
+int computeNewCentroids(linked_list** clusters, double** centroids, int k, int d);
 void printOutput(double** centroids, int k, int d);
-void freeClusterArray(linked_list** clusters, int k);
+//void freeClusterArray(linked_list** clusters, int k);
 void freeDouble2DArray(double **centroids, int k);
 
 int main(int argc, char *argv[]) {
@@ -81,9 +81,8 @@ int main(int argc, char *argv[]) {
         printf("K is not a valid integer, exits...\n");
         return false;
     }
-    
     kmean(pointsList, k, max_iter, d);
-    freeList(pointsList);
+    freeList(pointsList, true);
 
     return 0;
 }
@@ -192,14 +191,17 @@ double* convertDoubleListToArray(linked_list_double* list, int d) {
     return point;
 }
 
-void freeList(linked_list* list) { 
-    freeNode(list -> head);
+void freeList(linked_list* list, int isDeletePoint) { 
+    freeNode(list -> head, isDeletePoint);
     free(list);
 }
 
-void freeNode(node* n) {
+void freeNode(node* n, int isDeletePoint) {
     if (n != NULL) {
-        freeNode(n -> next);
+        freeNode(n -> next, isDeletePoint);
+        if(isDeletePoint == true){
+            free(n -> point);
+        }
         free(n);
     }
 }
@@ -216,13 +218,6 @@ void freeNodeDouble(node_double* n) {
     }
 }
 
-void freeClusterArray(linked_list** clusters, int k) {
-    for (int i = 0; i < k; i++) {
-        freeList(clusters[i]);
-    }
-    free(clusters);
-}
-
 void freeDouble2DArray(double **centroids, int k) {
     for (int i = 0; i < k; i++) {
         free(centroids[i]);
@@ -231,31 +226,28 @@ void freeDouble2DArray(double **centroids, int k) {
 }
 
 void kmean(linked_list *pointsArray, int k, int max_iter, int d) {
-    int i = 0, j = 0, iter = 0;
-    double **centroids, **newCentroids; 
+    int i = 0, j = 0, iter = 0, isChanged;
+    double **centroids;
     node* head = pointsArray -> head;
     
     //set initial centroids to be the first k points in pointsArray 
     centroids = calloc(k, sizeof(double*)); 
     assert(centroids != NULL);
     for (int i = 0; i < k; head = head -> next, i++) {;
-        centroids[i] = head -> point;
+        centroids[i] = copy_point(head -> point, d);
     }
 
     for (int iter = 0; iter < max_iter; iter++) {
-        newCentroids = computeCluster(k, d, centroids, pointsArray);
-        if (isArraysEquel(newCentroids, centroids, k, d) == true) {
+        isChanged = computeCluster(k, d, centroids, pointsArray);        
+        if (!isChanged) {
             break;
-        }
-        freeDouble2DArray(centroids, k);
-        centroids = newCentroids;
+        }        
     }
     printOutput(centroids, k , d);
     freeDouble2DArray(centroids, k);
 }
 
 double* copy_point(double* point, int d) {
-    int i = 0;
     double* new_point = calloc(d, sizeof(double));
     assert(new_point != NULL);
     for (int i = 0; i < d; i++) {
@@ -264,22 +256,23 @@ double* copy_point(double* point, int d) {
     return new_point;
 }
 
-double** computeCluster(int k, int d, double** centroids, linked_list* pointsList) {
+int computeCluster(int k, int d, double** centroids, linked_list* pointsList) {
     linked_list** clusters = (linked_list**)calloc(k, sizeof(linked_list*)); 
     assert(clusters != NULL);
     double** newCentroids;
     double minDist, dist;
     int minIndex;
+    int isChanged;
 
     for(int i = 0; i < k; i++) {
-        clusters[i] = (linked_list*)malloc(sizeof(linked_list)); 
+        clusters[i] = (linked_list*)calloc(1, sizeof(linked_list));
         assert(clusters[i] != NULL);
     }
 
     for(node* n = pointsList -> head; n != NULL; n = n -> next ) {
         minIndex = 0;
-        minDist = 999999; ///////////////////////////////////////////////////// find real min value !! 
-        for (int i = 0; i < k; i++) {
+        minDist = computeDist(centroids[0], n -> point, d);
+        for (int i = 1; i < k; i++) {
             
             dist = computeDist(centroids[i], n -> point, d);
             if (dist < minDist) {
@@ -289,29 +282,34 @@ double** computeCluster(int k, int d, double** centroids, linked_list* pointsLis
         }
         addToList(clusters[minIndex], n -> point);
     }
-    newCentroids = computeNewCentroids(clusters, k, d);
-    freeClusterArray(clusters, k);
-    return newCentroids;
+    isChanged = computeNewCentroids(clusters, centroids, k, d);
+    for(int i = 0; i < k; i++){
+        freeList(clusters[i], false);
+    }
+    free(clusters);
+    return isChanged;
 }
 
-double** computeNewCentroids(linked_list** clusters, int k, int d) {
-    double** centroids = calloc(k, sizeof(double*)); 
-    assert(centroids != NULL);
-    double* centroid;
+int computeNewCentroids(linked_list** clusters, double** centroids, int k, int d) {
+    double* oldCentroid, *newCentroid;
     int j;
+    int isChanged = false;
     for (int i = 0; i < k; i++) {
-        centroid = calloc(d, sizeof(double)); 
-        assert(centroid != NULL);
+        oldCentroid = copy_point(centroids[i], d);
+        newCentroid = centroids[i];
         j = 0;
         for (node* n = (clusters[i]) -> head; n != NULL; n = n-> next) {
             for(int t = 0; t < d; t++) {
-                centroid[t] = (centroid[t] * j + (n -> point)[t]) / (j + 1);
+                newCentroid[t] = (newCentroid[t] * j + (n -> point)[t]) / (j + 1);
             }
             j++;
         }
-        centroids[i] = centroid;
+        if (isPointsEquel(oldCentroid, newCentroid, d) == false){
+            isChanged = true;
+        }
+        free(oldCentroid);
     }
-    return centroids;
+    return isChanged;
 }
 
 double computeDist(double* point1, double* point2, int d) {
