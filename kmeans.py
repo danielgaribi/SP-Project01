@@ -97,6 +97,9 @@ def printOutput(centroids):
 def main():
     k, max_iter = readArgs()
     pointsArray = readPointsFromFile()
+    if (k >= len(pointsArray)):
+        print("K is not smaller then n, exits...")
+        exit(0)
 
     if (DEBUG_INPUT):
         print(f"k: {k}\nmax_iter: {max_iter}")

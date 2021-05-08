@@ -68,8 +68,8 @@ int main(int argc, char *argv[]) {
     assert(pointsList != NULL);
     pointsList->length = 0;
     d = readPointsArray(pointsList);
-    if(k > pointsList->length) {
-        printf("K is not a valid integer, exits...\n");
+    if(k >= pointsList->length) {
+        printf("K is not smaller then n, exits...\n");
         return false;
     }
     kmean(pointsList, k, max_iter, d);
