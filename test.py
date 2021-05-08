@@ -1,11 +1,11 @@
 import subprocess
 
 TESTS = {
-    './prog 3 600 < tests/input_1.txt': 'tests/output_1.txt',
+    './hw1 3 600 < tests/input_1.txt': 'tests/output_1.txt',
     'python3 kmeans.py 3 600 < tests/input_1.txt': 'tests/output_1.txt',
-    './prog 7 < tests/input_2.txt': 'tests/output_2.txt',
+    './hw1 7 < tests/input_2.txt': 'tests/output_2.txt',
     'python3 kmeans.py 7 < tests/input_2.txt': 'tests/output_2.txt',
-    './prog 15 300 < tests/input_3.txt': 'tests/output_3.txt',
+    './hw1 15 300 < tests/input_3.txt': 'tests/output_3.txt',
     'python3 kmeans.py 15 300 < tests/input_3.txt': 'tests/output_3.txt'
 }
 

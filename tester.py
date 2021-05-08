@@ -4,7 +4,7 @@ import time
 parse = lambda x: "".join(x.split()) # Remove Whitespaces.
 SEPERATOR = "-" * 7
 PYTHON_IMPL = "python3 kmeans.py"
-C_IMPL = "./prog"
+C_IMPL = "./hw1"
 tests = ["3 600 < tests/input_1.txt", "7 < tests/input_2.txt", "15 300 < tests/input_3.txt"]
 outputs = ["tests/output_1.txt", "tests/output_2.txt", "tests/output_3.txt"]
 for output, test in zip(outputs, tests):
